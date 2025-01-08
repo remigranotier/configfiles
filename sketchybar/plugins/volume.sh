@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WIDTH=100
+WIDTH=0
 
 volume_change() {
   source "$CONFIG_DIR/icons.sh"
@@ -23,7 +23,7 @@ volume_change() {
 
   INITIAL_WIDTH="$(sketchybar --query $NAME | jq -r ".slider.width")"
   if [ "$INITIAL_WIDTH" -eq "0" ]; then
-    sketchybar --animate tanh 30 --set $NAME slider.width=$WIDTH 
+    sketchybar --animate tanh 10 --set $NAME slider.width=$WIDTH 
   fi
 
   sleep 2
@@ -31,7 +31,7 @@ volume_change() {
   # Check wether the volume was changed another time while sleeping
   FINAL_PERCENTAGE="$(sketchybar --query $NAME | jq -r ".slider.percentage")"
   if [ "$FINAL_PERCENTAGE" -eq "$INFO" ]; then
-    sketchybar --animate tanh 30 --set $NAME slider.width=0
+    sketchybar --animate tanh 10 --set $NAME slider.width=0
   fi
 }
 

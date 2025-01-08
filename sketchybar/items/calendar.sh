@@ -3,10 +3,11 @@
 calendar=(
   icon=􀐫
   icon.font="$FONT:Black:12.0"
-  icon.padding_right=0
-  label.align=right
-  padding_left=15
-  update_freq=10
+  label.font="SF Mono:Semibold:13.0"
+  icon.padding_right=5
+  label.align=left
+  padding_left=3
+  update_freq=1
   script="$PLUGIN_DIR/calendar.sh"
   click_script="$PLUGIN_DIR/zen.sh"
 )

@@ -40,7 +40,14 @@ for m in $(aerospace list-monitors | awk '{print $1}'); do
     if [ "${apps}" != "" ]; then
       while read -r app
       do
-        icon_strip+=" $($CONFIG_DIR/plugins/icon_map.sh "$app")"
+        APP_INFO=$(lsappinfo info -only StatusLabel `lsappinfo find LSDisplayName=$app`)
+        APP_COUNT=
+        regex="\"StatusLabel\"={ \"label\"=\"(.*)\" }"
+        if [[ $APP_INFO =~ $regex ]]
+        then
+          APP_COUNT="${BASH_REMATCH[1]}"   # same thing stored in a variable
+        fi
+        icon_strip+=" $($CONFIG_DIR/plugins/icon_map.sh "$app") $APP_COUNT"
       done <<< "${apps}"
     else
       icon_strip=" —"
@@ -75,6 +82,16 @@ space_creator=(
 sketchybar --add item space_creator left               \
            --set space_creator "${space_creator[@]}"   \
            --subscribe space_creator aerospace_workspace_change
+
+space_reloader=(
+  script="$PLUGIN_DIR/space_reloader.sh"
+  label.drawing=off
+  update_freq=5
+  updates=on
+)
+sketchybar --add item space_reloader right \
+           --set space_reloader "${space_reloader[@]}"\
+              icon.font.size=15 update_freq=5 script="$PLUGIN_DIR/space_reloader.sh"
 
 # sketchybar  --add item change_windows left \
 #             --set change_windows script="$PLUGIN_DIR/change_windows.sh" \
